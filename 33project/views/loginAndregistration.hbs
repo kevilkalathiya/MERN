@@ -1,0 +1,99 @@
+{{> header}}
+
+    {{!-- <link rel="stylesheet" href="assets/css/Login.css" /> --}}
+    
+<div class="login-body">
+    <!-- login-container div -->
+    <div class="login-container">
+
+      <!-- upper button section to select
+             the login or signup form -->
+      <div class="login-slider"></div>
+      <div class="login-btn">
+        <button class="login">Login</button>
+        <button class="signup">Signup</button>
+      </div>
+
+      <!-- Form section that contains the
+             login and the signup form -->
+      <div class="form-section">
+
+        <!-- login form -->
+        <form id="login_form" method="post">
+        <div class="login-box">
+          <input
+            type="email"
+            class="email ele"
+            placeholder="youremail@email.com"
+            name="email" id="email" required
+          />
+          <input type="password" class="password ele" placeholder="password" name="password" id="password" required/>
+          <button class="clkbtn">Login</button>
+        </div>
+        </form>
+
+        <!-- signup form -->
+        <form  id="form" method="post" name="signup_form">
+        <div class="signup-box">
+          <input type="text" class="form-control name ele" placeholder="Enter your UserName" name="username" id="username">
+          <input type="email" class="email ele" placeholder="youremail@email.com" name="email" id="email_signup"/>
+          <input type="text" class="name ele" placeholder="Enter your Mobile No." name="mobile_no" id="mobile_no"/>
+          <input type="password" class="form-control password ele" placeholder="password" name="password" id="password_signup"/>
+          <input type="submit" class="clkbtn" value="Signup"></input>
+        </div>
+        </form>
+      </div>
+    </div>
+</div>
+
+    {{!-- <script src="assets/js/Login.js"></script> --}}
+
+{{> footer}}
+
+<script>
+    $("#form").submit(function (e) {
+        e.preventDefault();
+        //alert('Data')
+        // let formData = $("#form").serialize()
+        // let formData = $("#form").serializeArray()
+        // console.log("form ArraySerialize", formData); 
+
+        var result = {}
+        $.each($("#form").serializeArray(), function () {
+            result[this.name] = this.value;
+        });
+        console.log("called after loop", result); 
+        fetch("http://localhost:3000/Login")
+        .then((res) => res.json())
+        .then((response) => {
+          console.log("called inside response", response);
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+        });
+
+         fetch("http://localhost:3000/Login").then((res)=>res.json()).then((response)=>{
+          console.log("called inside response", response);
+           // console.log("called inside response",response);
+          }) 
+
+     document.signup_form.reset()
+    })
+
+
+    $('#login_form').submit(function(e){
+      e.preventDefault()
+    // let formData = $("#login_form").serialize()
+    // let formData = $('#login_form').serializeArray()
+    // console.log("form ArraySerialize", formData)
+
+    var result = {}
+    $.each($('#login_form').serializeArray(),function(){
+      result[this.name]=this.value
+    })
+      console.log("called after loop", result); 
+
+    e.target.reset()
+
+    })
+</script>

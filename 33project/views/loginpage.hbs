@@ -1,0 +1,91 @@
+{{>header}}
+
+<!-- welcome section -->
+<section class="w3l-feature-8">
+    <div class="features-main py-5">
+        <div class="container py-md-5 py-4">
+
+            <div class="row features text-center">
+                <div class="offset-lg-4 col-lg-4 col-sm-6 mt-sm-0 mt-5">
+                    <div class="feature-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="title-heading-w3 text-center mx-auto pb-sm-4">
+                                    <h3 class="title-main">Login </h3>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <form id="form" method="post">
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="email" placeholder="Enter your email"
+                                                class="form-control" name="email" id="email">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="password" placeholder="Enter your Password"
+                                                class="form-control" name="password" id="password">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="submit" class="btn btn-sm btn-primary" name="btn-login"
+                                                id="btn-login">
+                                            <input type="reset" class="btn btn-sm btn-danger">
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <a href="registration">Create new account</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- //welcome section -->
+{{>footer}}
+
+
+<script>
+    $("#form").submit(function (e) {
+        e.preventDefault();
+        //alert('Data')
+        // let formData = $("#form").serialize()
+        // let formData = $("#form").serializeArray()
+        // console.log("form ArraySerialize", formData); 
+
+        var result = {}
+        $.each($("#form").serializeArray(), function () {
+            result[this.name] = this.value;
+        });
+        console.log("called after loop", result); 
+
+        fetch("http://localhost:3000/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(result)
+        }).then((res) => res.json()).then((response) => {
+            console.log("called inside response", response);
+            console.log("called inside response", response.data);
+            if (response.code == 1) {
+                console.log("called inside response", response.data.Role);
+                if (response.data.Role == 'Admin') {
+                    window.location.href = "/admindashboard"
+                } else {
+                    window.location.href = "/"
+
+                }
+            }else {
+                alert("invalid user")
+                }
+        })
+                e.target.reset()
+        })
+</script>
