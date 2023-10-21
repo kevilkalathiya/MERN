@@ -1,0 +1,279 @@
+{{>admin_header}}
+
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white me-2">
+          <i class="mdi mdi-home"></i>
+        </span> All Users
+      </h3>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <div class="clearfix">
+              <div class="row">
+                <div class="col-9">
+                  <h4 class="card-title float-left">View All Users </h4>
+                </div>
+                <div class="col-3 text-end mt-4 my-3">
+                  <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                  data-bs-target="#exampleModal">Add New Users</button>
+                </div>
+              </div>
+              <!-- Button trigger modal -->
+
+              <!-- add new user Modal -->
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Registration New user</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="form">
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter your UserName" class="form-control"
+                                                name="username" id="username" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="email" placeholder="Enter your email"
+                                                class="form-control" name="email" id="email" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="tel" placeholder="Enter Mobile Number"
+                                                class="form-control" name="mobile" id="mobile" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="password" placeholder="Enter your Password"
+                                                class="form-control" name="password" id="password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="submit" class="btn btn-sm btn-primary" name="btn-login"
+                                                id="btn-login">
+                                            <input type="reset" class="btn btn-sm btn-danger">
+                                        </div>
+                                    </div>
+                        </form>
+                    </div>
+                    {{!-- <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> --}}
+                  </div>
+                </div>
+              </div>
+
+              <!-- update user data Modal -->
+              <div class="modal fade" id="update_exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Update User Data</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" id="update_form">
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="text" placeholder="Enter your UserName" class="form-control"
+                                                name="username" id="u_username" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="email" placeholder="Enter your email"
+                                                class="form-control" name="email" id="u_email" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="tel" placeholder="Enter Mobile Number"
+                                                class="form-control" name="mobile" id="u_mobile" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="password" placeholder="Enter your Password"
+                                                class="form-control" name="password" id="u_password" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-2">
+                                        <div class="col">
+                                            <input type="submit" class="btn btn-sm btn-primary" name="btn-login"
+                                                id="btn-login">
+                                            <input type="reset" class="btn btn-sm btn-danger">
+                                        </div>
+                                    </div>
+                        </form>
+                    </div>
+                    {{!-- <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> --}}
+                  </div>
+                </div>
+              </div>
+
+
+              <table class="table table-light table-bordered table-striped">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Role</th>
+                    <th style="width:25%">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{!-- {{json data}} --}}
+                  {{#each data }}
+                  <tr>
+                    <td>{{Username}}</td>
+                    <td>{{Email}}</td>
+                    <td>{{Mobile}}</td>
+                    <td>{{Role}}</td>
+                    <td>
+                      <button class="btn btn-sm btn-primary" data-id="{{_id}}" data-username="{{Username}}" data-email="{{Email}}" data-mobile="{{Mobile}}"
+                       data-bs-toggle="modal" data-bs-target="#update_exampleModal" onclick="editData()">Edit</button>
+                      <button class="btn btn-sm btn-danger" data-id="{{_id}}" data-tmaruname="tmaru name" data-maruname="maru name"
+                      onclick="deleteData()">Delete</button>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- content-wrapper ends -->
+  <!-- partial:partials/_footer.html -->
+  <footer class="footer">
+    <div class="container-fluid d-flex justify-content-between">
+      <span class="text-muted d-block text-center text-sm-start d-sm-inline-block">Copyright © bootstrapdash.com
+        2021</span>
+      <span class="float-none float-sm-end mt-1 mt-sm-0 text-end"> Free <a
+          href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin template</a>
+        from Bootstrapdash.com</span>
+    </div>
+  </footer>
+  <!-- partial -->
+</div>
+
+{{>admin_footer}}
+
+
+<script>
+      //  delete user
+      function deleteData() {
+
+        //console.log("inside function click",event.target.dataset.id) 
+        //console.log("inside function click",event.target.dataset.tmaruname)
+        let userId = event.target.dataset.id
+
+        fetch('deletedata/' + userId, { method: 'DELETE',})
+        .then(res => res.json()) // or res.text()
+        .then(res => console.log(res))
+
+        window.location.reload()
+      }
+
+      //  add user
+      //$("#form").on("submit",function(){})
+
+      $('#form').submit(function (e) {
+
+        e.preventDefault();
+
+        var result = {}
+        $.each($("#form").serializeArray(), function () {
+          result[this.name] = this.value;
+        });
+        console.log("Login Form Data : ", result);
+
+        fetch("auth/registration", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(result)
+        })
+        .then((res) => res.json())
+        .then((response) => {
+          console.log("Called inside response : ", response);
+          window.location.reload()
+        })
+      })
+
+
+      //edit user
+      function editData(){
+        let username = event.target.dataset.username
+        console.log(username)
+        let email = event.target.dataset.email
+        console.log(email)
+        let mobile = event.target.dataset.mobile
+        console.log(mobile)
+        let userId = event.target.dataset.id 
+        console.log(userId)
+
+        const u_username = document.getElementById("u_username")
+        const u_email = document.getElementById("u_email")
+        const u_mobile = document.getElementById("u_mobile")
+        u_username.value = username
+        u_email.value = email
+        u_mobile.value = mobile
+      
+     /* fetch('updatedata/' + userId, { method: 'PUT',})
+        .then(res => res.json()) // or res.text()
+        .then(res => console.log(res)) */
+      }
+
+       $('#update_form').submit(function (e) {
+
+        e.preventDefault();
+
+        var result = {}
+        $.each($("#update_form").serializeArray(), function () {
+          result[this.name] = this.value;
+        });
+        console.log("Login Form Data : ", result);
+
+        fetch("/updatedata", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(result)
+        })
+        .then((res) => res.json())
+        .then((response) => {
+          console.log("Called inside response : ", response);
+          //window.location.reload()
+        }) 
+      })
+
+</script>

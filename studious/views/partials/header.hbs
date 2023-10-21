@@ -16,6 +16,8 @@
 </head>
 
 <body>
+    {{!-- {{{json data}}} --}}
+    
     <!-- top header -->
     <section class="w3l-top-header">
         <div class="container-fluid">
@@ -124,10 +126,26 @@
     </header>
     <!--//header-->
 
+    <input type="hidden" value="{{data.isloggedin}}" name="sessiondata" id="sessiondata">
 
     <script>
 
-            let cookie = {};
+        //  let sesData = document.getElementById("sessiondata")
+        //  console.log(sesData)
+        //  console.log(sesData.value)
+
+        let LoginMenu = ""
+
+        let sessionData = {{{json data}}}
+        console.log("sessionData",sessionData)
+            
+        if (sessionData.isloggedin == true) {
+            LoginMenu =`<a class="nav-link" href="/auth/logout">Sign out</a>`
+        } else {
+            LoginMenu =`<a class="nav-link" href="/auth/login">Sign in</a>`
+        }
+            
+        /*    let cookie = {};
             document.cookie.split(';').forEach(function (el) {
                 let [k, v] = el.split('=');
                 cookie[k.trim()] = v;
@@ -139,7 +157,8 @@
                 LoginMenu =`<a class="nav-link" href="/auth/logout">Sign out</a>`
             } else {
                 LoginMenu =`<a class="nav-link" href="/auth/login">Sign in</a>`
-            }
+            }       */
+
             document.getElementById('loginmenu').innerHTML = LoginMenu
             
     </script>

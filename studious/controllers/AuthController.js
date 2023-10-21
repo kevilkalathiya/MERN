@@ -4,11 +4,13 @@ const jwt = require("jsonwebtoken");
 
 const AuthController = {
   async get_login_page(req, res) {
-    res.render("login");
+    res.render("login", { data: { isloggedin: req.session.isloggedin } });
   },
 
   async get_registration_page(req, res) {
-    res.render("registration");
+    res.render("registration", {
+      data: { isloggedin: req.session.isloggedin },
+    });
   },
 
   async post_registration_page(req, res) {
@@ -27,14 +29,22 @@ const AuthController = {
       res.send(err.message);
     }
     // res.send("registration successfully");
-    res.render("login");
+    // res.render("login", { data: { isloggedin: req.session.isloggedin } });
+
+    res.status(200).json({
+      type: "success",
+      code: 1,
+      message: "Data inserted Successfully",
+      data: "test",
+    });
+    return;
   },
 
   async post_login_page(req, res) {
     const user = await User.findOne({ Email: req.body.email });
 
     if (!user) {
-      // console.log("inside user is not found");
+      console.log("inside user is not found");
       res.status(500).json({
         type: "failed",
         code: 0,
@@ -42,7 +52,7 @@ const AuthController = {
       });
       return;
     } else {
-      // console.log("inside user is found");
+      console.log("inside user is found");
       const token = jwt.sign(
         {
           id: user._id,
@@ -52,12 +62,12 @@ const AuthController = {
       user.token = token;
       await user.save();
 
-      res.cookie("email", user.Email);
-      res.cookie("isloggedin", "true");
-      res.cookie("token", token);
-      // req.session.email = user.Email;
-      // req.session.isloggedin = true;
-      // req.session.token = token;
+      // res.cookie("email", user.Email);
+      // res.cookie("isloggedin", "true");
+      // res.cookie("token", token);
+      req.session.email = user.Email;
+      req.session.isloggedin = true;
+      req.session.token = token;
     }
 
     const passwordMatch = bcrypt.compareSync(req.body.password, user.Password);
@@ -79,10 +89,14 @@ const AuthController = {
   },
 
   async logout(req, res) {
-    // console.log("called inside logout");
-    res.cookie("token", "");
-    res.cookie("isloggedin", "");
-    res.cookie("email", "");
+    console.log("called inside logout");
+
+    // res.cookie("token", "");
+    // res.cookie("isloggedin", "");
+    // res.cookie("email", "");
+
+    req.session.destroy();
+
     res.redirect("login");
     // res.render('login')
   },

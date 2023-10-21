@@ -24,6 +24,10 @@ app.use(
   })
 );
 
+hbs.registerHelper("json", function (context) {
+  return JSON.stringify(context);
+});
+
 const { common_route, auth_route } = require("../router");
 
 app.use("/", common_route);
