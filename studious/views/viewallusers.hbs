@@ -83,7 +83,7 @@
               </div>
 
               <!-- update user data Modal -->
-              <div class="modal fade" id="update_exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+              <div class="modal fade" id="updateData" tabindex="-1" aria-labelledby="UpdateModal"
                 aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -96,33 +96,34 @@
                                     <div class="row mt-2">
                                         <div class="col">
                                             <input type="text" placeholder="Enter your UserName" class="form-control"
-                                                name="username" id="u_username" required>
+                                                name="username" id="username_update" required>
                                         </div>
                                     </div>
                                     
                                     <div class="row mt-2">
                                         <div class="col">
                                             <input type="email" placeholder="Enter your email"
-                                                class="form-control" name="email" id="u_email" required>
+                                                class="form-control" name="email" id="email_update" required>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col">
                                             <input type="tel" placeholder="Enter Mobile Number"
-                                                class="form-control" name="mobile" id="u_mobile" required>
+                                                class="form-control" name="mobile" id="mobile_update" required>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col">
                                             <input type="password" placeholder="Enter your Password"
-                                                class="form-control" name="password" id="u_password" required>
+                                                class="form-control" name="password" id="password_update" required>
                                         </div>
                                     </div>
 
                                     <div class="row mt-2">
                                         <div class="col">
+                                            <input type="hidden" class="form-control" name="_id" id="_id">
                                             <input type="submit" class="btn btn-sm btn-primary" name="btn-login"
                                                 id="btn-login">
                                             <input type="reset" class="btn btn-sm btn-danger">
@@ -158,8 +159,8 @@
                     <td>{{Mobile}}</td>
                     <td>{{Role}}</td>
                     <td>
-                      <button class="btn btn-sm btn-primary" data-id="{{_id}}" data-username="{{Username}}" data-email="{{Email}}" data-mobile="{{Mobile}}"
-                       data-bs-toggle="modal" data-bs-target="#update_exampleModal" onclick="editData()">Edit</button>
+                      <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateData"
+                       onclick="getDataById('{{_id}}')">Edit</button>
                       <button class="btn btn-sm btn-danger" data-id="{{_id}}" data-tmaruname="tmaru name" data-maruname="maru name"
                       onclick="deleteData()">Delete</button>
                     </td>
@@ -191,6 +192,7 @@
 
 
 <script>
+
       //  delete user
       function deleteData() {
 
@@ -206,8 +208,7 @@
       }
 
       //  add user
-      //$("#form").on("submit",function(){})
-
+      //  $("#form").on("submit",function(){})
       $('#form').submit(function (e) {
 
         e.preventDefault();
@@ -230,50 +231,42 @@
         })
       })
 
+      //  update user data  
 
-      //edit user
-      function editData(){
-        let username = event.target.dataset.username
-        console.log(username)
-        let email = event.target.dataset.email
-        console.log(email)
-        let mobile = event.target.dataset.mobile
-        console.log(mobile)
-        let userId = event.target.dataset.id 
-        console.log(userId)
-
-        const u_username = document.getElementById("u_username")
-        const u_email = document.getElementById("u_email")
-        const u_mobile = document.getElementById("u_mobile")
-        u_username.value = username
-        u_email.value = email
-        u_mobile.value = mobile
-      
-     /* fetch('updatedata/' + userId, { method: 'PUT',})
-        .then(res => res.json()) // or res.text()
-        .then(res => console.log(res)) */
-      }
-
-       $('#update_form').submit(function (e) {
-
-        e.preventDefault();
-
-        var result = {}
-        $.each($("#update_form").serializeArray(), function () {
-          result[this.name] = this.value;
-        });
-        console.log("Login Form Data : ", result);
-
-        fetch("/updatedata", {
-            method: "PUT",
-            headers: { "Content-Type": "application/json", },
-            body: JSON.stringify(result)
+      function getDataById(id) {
+        fetch("updateuser/"+id, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json", }
         })
         .then((res) => res.json())
         .then((response) => {
-          console.log("Called inside response : ", response);
-          //window.location.reload()
-        }) 
+          //console.log(response);
+          document.getElementById("username_update").value=response.data.Username
+          document.getElementById("email_update").value=response.data.Email
+          document.getElementById("mobile_update").value=response.data.Mobile
+          document.getElementById("password_update").value=response.data.Password
+          document.getElementById("_id").value=response.data._id
+        })
+      }
+
+      $('#update_form').submit(function (e) {
+        e.preventDefault();
+        let username = document.getElementById("username_update").value
+        let email = document.getElementById("email_update").value
+        let mobile = document.getElementById("mobile_update").value
+        let password = document.getElementById("password_update").value
+        let id = document.getElementById("_id").value
+
+        fetch("updateuser/"+id, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", },
+          body: JSON.stringify({username:username,email:email,mobile:mobile,password:password})
+        })
+        .then((res) => res.json())
+        .then((response) => {
+          console.log(response);
+          window.location.reload()
+        })
       })
 
 </script>

@@ -49,4 +49,16 @@ UserSchema.pre("save", async function (next) {
   }
 });
 
+UserSchema.pre("findOneAndUpdate", async function (next) {
+  try {
+    if (this._update.Password) {
+      const hashed = await bcrypt.hash(this._update.Password, 10);
+      this._update.Password = hashed;
+    }
+    next();
+  } catch (err) {
+    return next(err);
+  }
+});
+
 module.exports = mongoose.model("Users", UserSchema);

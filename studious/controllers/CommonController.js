@@ -43,28 +43,38 @@ const CommonController = {
     return;
   },
 
-  async update_user_by_id(req, res) {
-    const { username, email, mobile, password } = req.body;
-    const updated_user = await User.findOne(
-      { Email: email },
-      {
-        Username: username,
-        Email: email,
-        Mobile: mobile,
-        Password: password,
-      }
-    );
-
-    const newuser = await updated_user.save();
-
-    console.log(updated_user);
-
+  async select_update_user_by_id(req, res) {
+    var id = req.params.id;
+    const user = await User.findOne({ _id: id });
     res.status(200).json({
       type: "success",
       code: 1,
-      message: "Data updated",
-      data: "user",
+      message: "Data fetch successfully",
+      data: user,
     });
+    return;
+  },
+
+  async store_update_user_by_id(req, res) {
+    //console.log("req.body", req.body);
+    var id = req.params.id;
+    const user = await User.findOneAndUpdate(
+      { _id: id },
+      {
+        Username: req.body.username,
+        Email: req.body.email,
+        Mobile: req.body.mobile,
+        Password: req.body.password,
+      },
+      { new: true }
+    );
+    res.status(200).json({
+      type: "success",
+      code: 1,
+      message: "Data Updated",
+      data: user,
+    });
+    return;
   },
 };
 
